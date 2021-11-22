@@ -23,7 +23,7 @@ class ImageResource(
     endpoint = "/images/"
 
     def random(self):
-        url = self.generate_url(action=ImageAction.RANDOM)
+        url = self.generate_url(action=ImageAction.RANDOM.value)
         return self.session.get(url)
 
     def __action_mixin(self, pk, action):

@@ -15,7 +15,7 @@ class ResourceClient:
         self.access_token = access_token
         self.refresh_token = refresh_token
 
-    def generate_url(self, pk=None, page=None, action=None):
+    async def generate_url(self, pk=None, page=None, action=None):
         try:
             api_endpoint = "".join([self.api_url, self.endpoint])
             if pk and action:

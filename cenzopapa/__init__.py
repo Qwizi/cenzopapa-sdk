@@ -5,7 +5,9 @@ from cenzopapa.resources import ImageResource, JWTResource
 
 class Cenzopapa:
 
-    def __init__(self, api_url):
+    def __init__(self, api_url=None):
+        if not api_url:
+            self.api_url = "https://api.jebzpapy.tk"
         self.api_url = api_url
         self.session = requests.Session()
         self.access_token = None

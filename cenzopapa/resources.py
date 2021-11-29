@@ -1,8 +1,10 @@
 from enum import Enum
 
+from httpx import AsyncClient
+
 from cenzopapa.decorators import check_authorization
 from cenzopapa.exceptions import NotAuthorized
-from cenzopapa.mixins import ListMixin, CreateMixin, RetrieveMixin
+from cenzopapa.mixins import ListMixin, CreateMixin, RetrieveMixin, create_image
 from cenzopapa.resource_client import ResourceClient
 
 
@@ -22,29 +24,31 @@ class ImageResource(
 ):
     endpoint = "/images/"
 
-    def random(self):
-        url = self.generate_url(action=ImageAction.RANDOM.value)
-        return self.session.get(url)
+    async def random(self):
+        async with AsyncClient() as client:
+            url = await self.generate_url(action=ImageAction.RANDOM.value)
+            response = await client.get(url)
+            return await create_image(response)
 
-    def __action_mixin(self, pk, action):
-        url = self.generate_url(pk=pk, action=action)
-        print(url)
-        response = self.session.post(url)
-        response.raise_for_status()
-        return response
+    async def __action_mixin(self, pk, action):
+        async with AsyncClient() as client:
 
-    @check_authorization
-    def favorite(self, pk):
-        return self.__action_mixin(pk=pk, action=ImageAction.FAVORITE.value)
+            url = await self.generate_url(pk=pk, action=action)
+            response = client.post(url)
+            response.raise_for_status()
+            return response
 
-    def unfavorite(self, pk):
-        return self.__action_mixin(pk=pk, action=ImageAction.UNVAFORITE.value)
+    async def favorite(self, pk):
+        return await self.__action_mixin(pk=pk, action=ImageAction.FAVORITE.value)
 
-    def like(self, image_pk):
-        return self.__action_mixin(pk=image_pk, action=ImageAction.LIKE.value)
+    async def unfavorite(self, pk):
+        return await self.__action_mixin(pk=pk, action=ImageAction.UNVAFORITE.value)
 
-    def unlike(self, image_pk):
-        return self.__action_mixin(pk=image_pk, action=ImageAction.UNLIKE.value)
+    async def like(self, image_pk):
+        return await self.__action_mixin(pk=image_pk, action=ImageAction.LIKE.value)
+
+    async def unlike(self, image_pk):
+        return await self.__action_mixin(pk=image_pk, action=ImageAction.UNLIKE.value)
 
 
 class JWTResource(ResourceClient):

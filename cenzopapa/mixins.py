@@ -1,30 +1,62 @@
 import json
 
+from httpx import AsyncClient
+
+from cenzopapa.schemas import Image, ImageList
+
+
+async def create_result_images(data):
+    for i, result in enumerate(data.results):
+        data.results[i] = Image(**result)
+    return data
+
+
+async def create_image(response, images_list=False):
+    response.raise_for_status()
+    data = response.json()
+    if images_list:
+        data = ImageList(**data)
+        data = create_result_images(data)
+    else:
+        data = Image(**data)
+    return data, response
+
+
 class ListMixin:
-    def list(self, page=None):
-        url = self.generate_url(page=page)
-        return self.session.get(url)
+    async def list(self, page=None):
+        async with AsyncClient() as client:
+            url = await self.generate_url(page=page)
+            response = await client.get(url)
+            return await create_image(response, True)
 
 
 class CreateMixin:
-    def create(self, data):
-        url = self.generate_url()
-        return self.session.put(url, data=json.dumps(data))
+    async def create(self, data):
+        async with AsyncClient() as client:
+            url = await self.generate_url()
+            response = client.post(url, data=json.dumps(data))
+            return await create_image(response)
 
 
 class RetrieveMixin:
-    def retrieve(self, pk):
-        url = self.generate_url(obj_pk=pk)
-        return self.session.get(url)
+    async def retrieve(self, pk):
+        async with AsyncClient() as client:
+            url = await self.generate_url(pk=pk)
+            response = await client.get(url)
+            return create_image(response)
 
 
 class UpdateMixin:
-    def update(self, pk, updated_data):
-        url = self.generate_url(obj_pk=pk)
-        return self.session.post(url, data=json.dumps(updated_data))
+    async def update(self, pk, updated_data):
+        async with AsyncClient() as client:
+            url = self.generate_url(obj_pk=pk)
+            response = client.post(url, data=json.dumps(updated_data))
+            return create_image(response)
 
 
 class DeleteMixin:
-    def delete(self, pk):
-        url = self.generate_url(obj_pk=pk)
-        return self.session.delete(url)
+    async def delete(self, pk):
+        async with AsyncClient() as client:
+            url = self.generate_url(obj_pk=pk)
+            response = client.delete(url)
+            return create_image(response)

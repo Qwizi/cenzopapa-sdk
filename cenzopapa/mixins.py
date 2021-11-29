@@ -2,7 +2,7 @@ import json
 
 from httpx import AsyncClient
 
-from src.cenzopapa.schemas import Image, ImageList
+from cenzopapa.schemas import Image, ImageList
 
 
 async def create_result_images(data):

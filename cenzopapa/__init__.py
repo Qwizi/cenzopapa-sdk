@@ -1,6 +1,6 @@
 import requests
 
-from src.cenzopapa.resources import ImageResource, JWTResource
+from cenzopapa.resources import ImageResource, JWTResource
 
 
 class Cenzopapa:

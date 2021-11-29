@@ -2,8 +2,8 @@ from enum import Enum
 
 from httpx import AsyncClient
 
-from src.cenzopapa.mixins import ListMixin, RetrieveMixin, create_image
-from src.cenzopapa.resource_client import ResourceClient
+from cenzopapa.mixins import ListMixin, RetrieveMixin, create_image
+from cenzopapa.resource_client import ResourceClient
 
 
 class ImageAction(str, Enum):

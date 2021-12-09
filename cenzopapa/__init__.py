@@ -1,6 +1,6 @@
 from cenzopapa.resources import ImageResource, JWTResource
 
-__version__ = "1.0.1"
+__version__ = "1.0.3"
 
 
 class Cenzopapa:

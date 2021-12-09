@@ -1,16 +1,10 @@
-import json
-
-import requests
-
-
 class ResourceClient:
     session = None
     endpoint = None
     access_token = None
     refresh_token = None
 
-    def __init__(self, session, api_url, access_token, refresh_token):
-        self.session = session
+    def __init__(self, api_url, access_token, refresh_token):
         self.api_url = api_url
         self.access_token = access_token
         self.refresh_token = refresh_token
@@ -30,17 +24,3 @@ class ResourceClient:
             return api_endpoint
         except TypeError:
             print("Wystapil problem")
-
-    def __refresh(self, refresh_token):
-        try:
-            response = requests.post(f"{self.api_url}/auth/jwt/refresh", data=json.dumps({
-                "refresh": refresh_token
-            }))
-            response.raise_for_status()
-            data = response.json()
-            return data['access']
-        except requests.exceptions.HTTPError as e:
-            print(e)
-
-    def get_refresh_token(self):
-        return self.__refresh(self.refresh_token)

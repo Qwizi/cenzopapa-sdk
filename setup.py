@@ -8,7 +8,7 @@ if os.path.isfile(requirementPath):
         install_requires = f.read().splitlines()
 setup(
     name='cenzopapa-sdk',
-    version='1.1.0',
+    version='1.1.1',
     author='Adrian \'Qwizi\' Ciołek',
     author_email='ciolek.adrian@protonmail.com',
     url='https://github.com/Qwizi/cenzopapa-sdk',

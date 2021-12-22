@@ -1,4 +1,4 @@
-from cenzopapa.resources import ImageResource, JWTResource
+from cenzopapa.resources import ImageResource
 
 __version__ = "1.0.3"
 
@@ -6,10 +6,8 @@ __version__ = "1.0.3"
 class Cenzopapa:
 
     def __init__(self, api_url=None):
+        self.api_url = api_url
         if not api_url:
             self.api_url = "https://api.jebzpapy.tk"
-        self.api_url = api_url
-        self.access_token = None
-        self.refresh_token = None
 
-        self.image = ImageResource(api_url=api_url, access_token=self.access_token, refresh_token=self.refresh_token)
+        self.image = ImageResource(api_url=self.api_url)

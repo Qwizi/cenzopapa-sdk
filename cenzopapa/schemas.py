@@ -7,11 +7,8 @@ class Image:
     id: int
     url: str
     width: int
-    height: 313
+    height: int
     posted_at: datetime.datetime
-    author: int
-    likes: list
-    likes_count: int
 
 
 @dataclass

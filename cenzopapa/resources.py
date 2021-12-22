@@ -22,7 +22,7 @@ class ResourceClient:
             if action:
                 return "".join([api_endpoint, action, "/"])
 
-            return api_endpoint
+            return api_endpoint+"?format=json"
         except TypeError:
             print("Wystapil problem")
 

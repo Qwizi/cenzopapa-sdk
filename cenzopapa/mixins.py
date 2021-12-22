@@ -16,7 +16,7 @@ async def create_image(response, images_list=False):
     data = response.json()
     if images_list:
         data = ImageList(**data)
-        data = create_result_images(data)
+        data = await create_result_images(data)
     else:
         data = Image(**data)
     return data, response

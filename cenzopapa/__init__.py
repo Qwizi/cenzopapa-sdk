@@ -1,6 +1,6 @@
 from cenzopapa.resources import ImageResource
 
-__version__ = "1.0.3"
+__version__ = "1.1.0"
 
 
 class Cenzopapa:
